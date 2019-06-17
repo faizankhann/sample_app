@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  has_many :microposts, dependent: :destroy
   validates :name, presence: true
   validates :email, presence: true
 
@@ -18,4 +19,8 @@ class User < ApplicationRecord
                                                  BCrypt::Engine.cost
    BCrypt::Password.create(string, cost: cost)
  end
+
+ def feed
+    Micropost.where("user_id = ?", id)
+  end
 end
